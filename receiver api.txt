@@ -1,0 +1,26 @@
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+
+// endpoint ESP32 will call
+app.get("/update", (req, res) => {
+    const { temp, hum } = req.query;
+
+    global.latestData = {
+        temp,
+        hum,
+        time: new Date().toLocaleTimeString()
+    };
+
+    console.log("Received:", global.latestData);
+    req.send("OK");
+});
+
+// Endpoint dashboard will read
+app.get("/data", (req, res) => {
+    res.json(global.latestData || {});
+})
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server running"));

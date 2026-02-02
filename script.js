@@ -15,6 +15,7 @@ class EmergencyDatabase {
         this.loadFromLocalStorage();
     }
 
+
    
     save() {
         try {
@@ -1416,4 +1417,109 @@ if (session) {
     } catch (e) {
         localStorage.removeItem('emergency_session');
     }
+    // ========================
+// SETTINGS PAGE HANDLERS
+// ========================
+// Show settings page (assuming you add a "Settings" button in nav with id="btnSettings")
+document.getElementById('btnSettings').addEventListener('click', () => {
+    // Hide other pages
+    ['dashboardContainer', 'studentsPage', 'devicesPage', 'reportsPage'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+    // Show settings
+    document.getElementById('settingsPage').classList.remove('hidden');
+    // Fill user profile inputs
+    if (currentUser) {
+        document.getElementById('profileName').value = currentUser.fullName;
+        document.getElementById('profileEmail').value = currentUser.email;
+        document.getElementById('profilePassword').value = '';
+    }
+    // Fill alert settings
+    document.getElementById('highTempLimit').value = db.settings.highTempLimit || 50;
+    // Set dashboard view radio buttons
+    const view = db.settings.dashboardView || 'chart';
+    document.querySelectorAll('input[name="dashboardView"]').forEach(radio => {
+        radio.checked = radio.value === view;
+    });
+});
+// Back to dashboard
+document.getElementById('btnBackToDashboard').addEventListener('click', () => {
+    document.getElementById('settingsPage').classList.add('hidden');
+    document.getElementById('dashboardContainer').classList.remove('hidden');
+    updateDashboard(); // optional: refresh dashboard after leaving settings
+});
+// ========================
+// PROFILE UPDATE
+// ========================
+document.getElementById('btnUpdateProfile').addEventListener('click', () => {
+    if (!currentUser) return;
+    const name = document.getElementById('profileName').value.trim();
+    const email = document.getElementById('profileEmail').value.trim();
+    const password = document.getElementById('profilePassword').value;
+    if (!name || !email) {
+        alert('Name and email cannot be empty!');
+        return;
+    }
+    currentUser.fullName = name;
+    currentUser.email = email;
+    if (password.length >= 6) currentUser.password = password;
+    db.save();
+    db.logEvent('user_profile_update', `User ${currentUser.username} updated profile`);
+    alert('Profile updated successfully!');
+});
+// ========================
+// DASHBOARD DISPLAY OPTION
+// ========================
+document.querySelectorAll('input[name="dashboardView"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        db.settings.dashboardView = radio.value;
+        db.save();
+        alert('Dashboard display option updated!');
+    });
+});
+// ========================
+// ALERT SETTINGS
+// ========================
+document.getElementById('highTempLimit').addEventListener('change', () => {
+    const val = parseFloat(document.getElementById('highTempLimit').value);
+    if (!isNaN(val)) {
+        db.settings.highTempLimit = val;
+        db.save();
+        alert(`High temperature alert limit set to ${val}°C`);
+    }
+});
+// ========================
+// THEME SWITCHING
+// ========================
+document.getElementById('btnLightMode').addEventListener('click', () => {
+    document.body.classList.remove('dark-mode');
+    document.body.classList.add('light-mode');
+    db.settings.theme = 'light';
+    db.save();
+});
+document.getElementById('btnDarkMode').addEventListener('click', () => {
+    document.body.classList.remove('light-mode');
+    document.body.classList.add('dark-mode');
+    db.settings.theme = 'dark';
+    db.save();
+});
+// ========================
+// DEVICE LIST (read-only display)
+// ========================
+function loadSettingsDeviceList() {
+    const container = document.getElementById('deviceList');
+    if (!container) return;
+    container.innerHTML = db.devices.map(device => {
+        const student = db.students.find(s => s.id === device.assignedTo);
+        return `<div style="margin-bottom: 6px; padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <strong>${device.id}</strong> (${device.type.toUpperCase()}) 
+            - Assigned to: ${student ? student.name : 'Unassigned'}
+            - Status: ${device.status.toUpperCase()} 
+            - Battery: ${device.battery}%
+        </div>`;
+    }).join('');
+}
+// Call this whenever you open settings
+document.getElementById('btnSettings').addEventListener('click', loadSettingsDeviceList);
 }

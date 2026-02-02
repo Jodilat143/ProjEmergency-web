@@ -853,6 +853,22 @@ tbody tr:hover {
     cursor: pointer;
 }
 
+.hidden {
+    display: none;
+}
+#settingsPage {
+    padding: 20px;
+}
+#settingsPage section {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+#settingsPage button {
+    margin-right: 10px;
+    margin-top: 5px;
+}
 
 
 .modal {

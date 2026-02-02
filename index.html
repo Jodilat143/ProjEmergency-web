@@ -237,6 +237,58 @@
                 </div>
             </div>
 
+            <div id="settingsPage" class="hidden">
+    <h2>⚙️ Settings</h2>
+    <!-- 1. User Account / Authentication -->
+    <section>
+        <h3>User Account / Authentication</h3>
+        <!-- Sign Up / Login -->
+        <button id="btnAddUser">Add New User</button>
+        <button id="btnManageUsers">Manage Users</button>
+        <div id="userList" style="margin-top: 10px;"></div>
+        <!-- Optional: Password Reset -->
+        <button id="btnResetPassword">Reset Password</button>
+    </section>
+    <!-- 2. Device Control -->
+    <section>
+        <h3>Device Control</h3>
+        <div id="deviceList">
+            <!-- List of devices with On/Off buttons populated by JS -->
+        </div>
+    </section>
+    <!-- 3. Dashboard Display -->
+    <section>
+        <h3>Dashboard Display</h3>
+        <label><input type="radio" name="dashboardView" value="chart"> Chart</label>
+        <label><input type="radio" name="dashboardView" value="numbers"> Numbers</label>
+    </section>
+    <!-- 4. Alert Settings -->
+    <section>
+        <h3>Alert Settings</h3>
+        <label>High Temperature Threshold: 
+            <input type="number" id="highTempLimit" value="50"> °C
+        </label>
+        <button id="btnSaveAlertSettings">Save Alert Settings</button>
+    </section>
+    <!-- 5. User Profile -->
+    <section>
+        <h3>User Profile</h3>
+        <input type="text" id="profileName" placeholder="Name">
+        <input type="email" id="profileEmail" placeholder="Email">
+        <input type="password" id="profilePassword" placeholder="New Password">
+        <button id="btnUpdateProfile">Update Profile</button>
+    </section>
+    <!-- 6. Theme -->
+    <section>
+        <h3>Theme</h3>
+        <button id="btnLightMode">Light Mode</button>
+        <button id="btnDarkMode">Dark Mode</button>
+    </section>
+    <!-- Back to Dashboard -->
+    <button id="btnBackToDashboard">← Back to Dashboard</button>
+</div>
+
+
             <div class="main-grid">
                 <div class="card">
                     <div class="card-header">
@@ -255,6 +307,8 @@
                         <div class="legend-item"><div class="legend-color" style="background: #f59e0b;"></div><span>RFID Only</span></div>
                     </div>
                 </div>
+
+                
 
                 <div>
                     <div class="card sos-card">
@@ -276,6 +330,56 @@
                 </div>
             </div>
         </div>
+        <div id="settingsPage" class="hidden">
+    <h2>⚙️ Settings</h2>
+    <!-- 1. User Account / Authentication -->
+    <section>
+        <h3>User Account / Authentication</h3>
+        <!-- Sign Up / Login -->
+        <button id="btnAddUser">Add New User</button>
+        <button id="btnManageUsers">Manage Users</button>
+        <div id="userList" style="margin-top: 10px;"></div>
+        <!-- Optional: Password Reset -->
+        <button id="btnResetPassword">Reset Password</button>
+    </section>
+    <!-- 2. Device Control -->
+    <section>
+        <h3>Device Control</h3>
+        <div id="deviceList">
+            <!-- List of devices with On/Off buttons populated by JS -->
+        </div>
+    </section>
+    <!-- 3. Dashboard Display -->
+    <section>
+        <h3>Dashboard Display</h3>
+        <label><input type="radio" name="dashboardView" value="chart"> Chart</label>
+        <label><input type="radio" name="dashboardView" value="numbers"> Numbers</label>
+    </section>
+    <!-- 4. Alert Settings -->
+    <section>
+        <h3>Alert Settings</h3>
+        <label>High Temperature Threshold: 
+            <input type="number" id="highTempLimit" value="50"> °C
+        </label>
+        <button id="btnSaveAlertSettings">Save Alert Settings</button>
+    </section>
+    <!-- 5. User Profile -->
+    <section>
+        <h3>User Profile</h3>
+        <input type="text" id="profileName" placeholder="Name">
+        <input type="email" id="profileEmail" placeholder="Email">
+        <input type="password" id="profilePassword" placeholder="New Password">
+        <button id="btnUpdateProfile">Update Profile</button>
+    </section>
+    <!-- 6. Theme -->
+    <section>
+        <h3>Theme</h3>
+        <button id="btnLightMode">Light Mode</button>
+        <button id="btnDarkMode">Dark Mode</button>
+    </section>
+    <!-- Back to Dashboard -->
+    <button id="btnBackToDashboard">← Back to Dashboard</button>
+</div>
 
         <div id="studentsPage" class="content hidden">
             <div class="page-header">
@@ -432,68 +536,63 @@
             </div>
         </div>
 
-        <div id="settingsPage" class="content hidden">
-            <div class="page-header">
-                <h2>⚙️ System Settings</h2>
-            </div>
+       <!-- SETTINGS PAGE -->
+<div id="settingsPage" class="hidden">
+    <h2>⚙️ Settings</h2>
+    
+    <!-- User Account / Authentication -->
+    <section class="settings-section">
+        <h3>User Account / Authentication</h3>
+        <button id="btnSignUp">Sign Up</button>
+        <button id="btnLogin">Login</button>
+        <button id="btnPasswordReset">Password Reset</button>
+        <label>
+            Role: 
+            <select id="userRole">
+                <option value="admin">Admin</option>
+                <option value="user">Regular User</option>
+                <option value="guest">Guest</option>
+            </select>
+        </label>
+    </section>
+    <!-- Device Control -->
+    <section class="settings-section">
+        <h3>Device Control</h3>
+        <div id="deviceList">
+            <button class="device-btn">Device 1 ON</button>
+            <button class="device-btn">Device 1 OFF</button>
+            <button class="device-btn">Device 2 ON</button>
+            <button class="device-btn">Device 2 OFF</button>
+        </div>
+    </section>
+    <!-- Dashboard Display -->
+    <section class="settings-section">
+        <h3>Dashboard Display</h3>
+        <label><input type="radio" name="dashboardView" value="chart"> Chart</label>
+        <label><input type="radio" name="dashboardView" value="numbers"> Numbers</label>
+    </section>
+    <!-- Alert Settings -->
+    <section class="settings-section">
+        <h3>Alert Settings</h3>
+        <label>High Temp Threshold: <input type="number" id="highTempLimit" value="50"> °C</label>
+    </section>
+    <!-- User Profile -->
+    <section class="settings-section">
+        <h3>User Profile</h3>
+        <input type="text" id="profileName" placeholder="Name">
+        <input type="email" id="profileEmail" placeholder="Email">
+        <input type="password" id="profilePassword" placeholder="New Password">
+        <button id="btnUpdateProfile">Update Profile</button>
+    </section>
+    <!-- Theme -->
+    <section class="settings-section">
+        <h3>Theme</h3>
+        <button id="btnLightMode">Light Mode</button>
+        <button id="btnDarkMode">Dark Mode</button>
+    </section>
+    <button id="btnBackToDashboard">← Back</button>
+</div>
 
-            <div class="settings-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>🏫 School Information</h3>
-                    </div>
-                    <div class="settings-content">
-                        <div class="form-group">
-                            <label>School Name</label>
-                            <input type="text" id="settingsSchoolName" class="settings-input">
-                        </div>
-                        <div class="form-group">
-                            <label>Campus Latitude</label>
-                            <input type="number" id="settingsLat" step="0.000001" class="settings-input">
-                        </div>
-                        <div class="form-group">
-                            <label>Campus Longitude</label>
-                            <input type="number" id="settingsLng" step="0.000001" class="settings-input">
-                        </div>
-                        <div class="form-group">
-                            <label>Map Zoom Level</label>
-                            <input type="number" id="settingsZoom" min="14" max="18" class="settings-input">
-                        </div>
-                        <button class="btn btn-primary" id="saveLocationBtn">💾 Save Location</button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>🔔 Notifications</h3>
-                    </div>
-                    <div class="settings-content">
-                        <div class="setting-item">
-                            <label><input type="checkbox" id="settingSOSAlerts" checked> SOS Alert Sounds</label>
-                        </div>
-                        <div class="setting-item">
-                            <label><input type="checkbox" id="settingEmailNotif" checked> Email Notifications</label>
-                        </div>
-                        <div class="setting-item">
-                            <label><input type="checkbox" id="settingSMSNotif"> SMS Alerts</label>
-                        </div>
-                        <div class="setting-item">
-                            <label><input type="checkbox" id="settingAutoRefresh" checked> Auto-refresh Dashboard</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>👤 Account Settings</h3>
-                    </div>
-                    <div class="settings-content">
-                        <p><strong>Name:</strong> <span id="accountName"></span></p>
-                        <p><strong>Email:</strong> <span id="accountEmail"></span></p>
-                        <p><strong>Role:</strong> <span id="accountRole"></span></p>
-                        <button class="btn" style="background: #667eea; color: white; margin-top: 15px;" id="changePasswordBtn">🔑 Change Password</button>
-                    </div>
-                </div>
 
                 <div class="card">
                     <div class="card-header">
