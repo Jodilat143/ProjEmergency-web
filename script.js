@@ -1,4 +1,15 @@
+// 1. Setup the Map object
+const map = L.map('map').setView([7.0731, 125.6128], 16); 
 
+// 2. Load the actual map tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// 3. Create a Global Marker so the Firebase script can move it later
+window.studentMarker = L.marker([7.0731, 125.6128]).addTo(map)
+    .bindPopup("<b>Student Device: DEVICE_01</b><br>Status: Active")
+    .openPopup();
 
 class EmergencyDatabase {
     constructor() {
@@ -174,8 +185,6 @@ const db = new EmergencyDatabase();
 
 let currentUser = null;
 let calamityModeActive = false;
-let map = null;
-let markers = [];
 let updateInterval = null;
 let audioEnabled = true;
 let sosAlerts = [];

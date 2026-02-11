@@ -988,4 +988,17 @@ tbody tr:hover {
         box-shadow: none;
         page-break-inside: avoid;
     }
+    .card {
+    box-shadow: none;
+    page-break-inside: avoid;
 }
+
+#map {
+    height: 450px; 
+    width: 100%;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    margin-top: 15px;
+    z-index: 1; 
+}
+    }
