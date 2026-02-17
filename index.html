@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emergency Response Dashboard - MikeyDev</title>
+    <title>Emergency Response Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-    <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .status-alert-red { background-color: #ef4444 !important; animation: pulse 1s infinite; color: white; }
+        .status-normal-green { background-color: #10b981 !important; color: white; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        #map { height: 500px; width: 100%; border-radius: 12px; margin-top: 10px; }
+    </style>
 </head>
 <body>
-
-
 <div id="setupPage" class="login-container">
     <div class="login-box">
         <h1>🏫 School Setup</h1>
@@ -156,7 +160,32 @@
                 <button class="icon-btn" id="logoutBtn" title="Logout">🚪</button>
             </div>
         </header>
+   <div id="dashboardPage" class="content-section" style="display: none; padding: 20px;">
+    
+    <div id="motionStatus" class="status-normal-green" style="padding: 15px; margin-bottom: 20px; border-radius: 12px; text-align: center; font-weight: bold; font-size: 1.2rem;">
+        🛡️ SYSTEM SECURE: NO MOTION DETECTED
+    </div>
 
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; border-left: 5px solid #10b981;">
+            <h3 style="color: #6b7280; font-size: 0.9rem; margin-bottom: 5px;">SAFE STUDENTS</h3>
+            <div id="safeCount" style="font-size: 2rem; font-weight: bold; color: #111827;">0</div>
+        </div>
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; border-left: 5px solid #ef4444;">
+            <h3 style="color: #6b7280; font-size: 0.9rem; margin-bottom: 5px;">TRAPPED / SOS</h3>
+            <div id="trappedCount" style="font-size: 2rem; font-weight: bold; color: #111827;">0</div>
+        </div>
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; border-left: 5px solid #3b82f6;">
+            <h3 style="color: #6b7280; font-size: 0.9rem; margin-bottom: 5px;">ACTIVE DEVICES</h3>
+            <div id="devicesActive" style="font-size: 2rem; font-weight: bold; color: #111827;">0</div>
+        </div>
+    </div>
+
+    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <h3 style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">📍 Real-Time Campus Map</h3>
+        <div id="map" style="height: 450px; width: 100%; border-radius: 10px; border: 1px solid #e5e7eb;"></div>
+    </div>
+</div>
         <div id="attendancePage" class="content">
             <div class="upload-card">
                 <h2>Upload Daily Attendance</h2>
@@ -732,22 +761,35 @@
   });
 </script>
 
-  // 4. Listen for ESP32 Data
-  const deviceRef = ref(db, 'devices/DEVICE_01');
+   // 4. Listen for ESP32 Data (Motion & GPS)
+  const deviceRef = ref(db, 'devices/DEVICE_01'); // Siguruha nga 'db' ang variable name sa imong getDatabase()
   onValue(deviceRef, (snapshot) => {
     const data = snapshot.val();
     if (data) {
-      console.log("ESP32 Data Received:", data);
-      
-      // Update your Dashboard UI with the live data
-      if(document.getElementById('lastUpdateTime')) {
-        document.getElementById('lastUpdateTime').innerText = new Date().toLocaleTimeString();
-      }
-      
-      // Example: If RFID is scanned, show the tag ID in the console
-      if(data.rfid_tag && data.rfid_tag !== "None") {
-        console.log("RFID Tag Detected: " + data.rfid_tag);
-      }
+        console.log("ESP32 Data Received:", data);
+
+        // A. UPDATE MOTION SENSOR UI
+        const motionBox = document.getElementById('motionStatus');
+        if (motionBox) {
+            if (data.motion_detected === true || data.motion_detected === 1) {
+                motionBox.innerText = "⚠️ WARNING: MOVEMENT DETECTED!";
+                motionBox.className = "status-alert-red";
+            } else {
+                motionBox.innerText = "🛡️ SYSTEM SECURE: NO MOTION DETECTED";
+                motionBox.className = "status-normal-green";
+            }
+        }
+
+        // B. UPDATE LAST UPDATE TIME (Imong original logic)
+        if (document.getElementById('lastUpdateTime')) {
+            document.getElementById('lastUpdateTime').innerText = new Date().toLocaleTimeString();
+        }
+
+        // C. UPDATE GPS / RFID DATA
+        if (data.rfid_tag && data.rfid_tag !== "None") {
+            console.log("RFID Tag Detected: " + data.rfid_tag);
+            // Dinhi nimo i-trigger ang imong attendance logic
+        }
     }
   });
 </script>
