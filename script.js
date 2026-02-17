@@ -309,9 +309,19 @@ document.getElementById('gotoRegisterLink').addEventListener('click', function(e
 });
 
 function initializeDashboard() {
-    document.getElementById('settingsSchoolName').value = db.settings.schoolName;
-    document.getElementById('settingsLat').value = db.settings.latitude;
-    document.getElementById('settingsLng').value = db.settings.longitude;
+    const schoolInput =
+    document.getElementById('settingsSchoolName'); // o 'setupSchoolName'
+    if (schoolInput){
+        schoolInput.value = db.settings.schoolName;
+    }
+    document.getElementById('settingsLat'); // o 'setupSchoolName'
+    if (schoolInput){
+        schoolInput.value = db.settings.latitude;
+    }
+    document.getElementById('settingsLng'); // o 'setupSchoolName'
+    if (schoolInput){
+        schoolInput.value = db.settings.longitude;
+    }
     document.getElementById('settingsZoom').value = db.settings.zoom;
     document.getElementById('accountName').textContent = currentUser.fullName;
     document.getElementById('accountEmail').textContent = currentUser.email;
@@ -663,7 +673,9 @@ function loadEventHistory() {
     if(timeline) timeline.innerHTML = db.events.slice(0, 50).map(e => `<div>[${new Date(e.timestamp).toLocaleTimeString()}] ${e.message}</div>`).join('');
 }
 
-document.getElementById('saveLocationBtn').addEventListener('click', () => {
+document.getElementById('saveLocationBtn');
+if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
     const settings = {
         schoolName: document.getElementById('settingsSchoolName').value,
         latitude: parseFloat(document.getElementById('settingsLat').value),
@@ -673,6 +685,7 @@ document.getElementById('saveLocationBtn').addEventListener('click', () => {
     db.updateSettings(settings);
     alert('Settings Saved!');
 });
+}
 
 document.getElementById('backupDataBtn').addEventListener('click', () => {
     const blob = new Blob([JSON.stringify(db.exportData())], {type: 'application/json'});
@@ -683,3 +696,4 @@ document.getElementById('backupDataBtn').addEventListener('click', () => {
 document.getElementById('clearDataBtn').addEventListener('click', () => {
     if (confirm('Clear everything?')) { db.clearAll(); location.reload(); }
 });
+
